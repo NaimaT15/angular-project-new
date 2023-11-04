@@ -1,5 +1,5 @@
 
-FROM node:14 AS builder
+FROM node:18 AS builder
 
 
 WORKDIR /app
@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Build the Angular app in production mode
-RUN npm run build --prod
+RUN npm run build --configuration production
 
 
 # Use the official Nginx image as the base image for serving the Angular app
