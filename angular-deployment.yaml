@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
       - name: angular
-        image: naima68/angular-project:v1.0 # Image that will be used to containers in the cluster
-        imagePullPolicy: IfNotPresent
+        image: naima68/angular-project:latest # Image that will be used to containers in the cluster
+       # imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80 # The port that the container is running on in the cluster
 ---
