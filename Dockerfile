@@ -1,28 +1,32 @@
-FROM nginx:alpine
-COPY /dist/angular-project /usr/share/nginx/html
-#WORKDIR /app
+# Use node image as base
+FROM node:18.17.1-alpine AS build
 
-# Copy the package.json and package-lock.json files to the container
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
-# Install the project dependencies
-#RUN npm install
+# Install dependencies
+RUN npm install
 
-# Copy the entire project to the container
+# Copy the entire project to the working directory
 COPY . .
 
-# Build the Angular app in production mode
-#RUN npm run build --prod
+# Build the Angular app for production
+RUN npm run build --prod
 
+# Use nginx image as the base for the final image
+FROM nginx:alpine
 
-# Use the official Nginx image as the base image for serving the Angular app
-#FROM nginx:latest
+# Copy the built Angular app from the previous stage to nginx directory
+# COPY ./conf/default.conf /etc/nginx/conf.d/default.conf
+RUN rm -rf /usr/share/nginx/html
+# COPY --from=builder /app/dist/ /usr/share/nginx/html    
+COPY --from=build /app/dist/ /usr/share/nginx/html
 
-# Copy the built Angular app from the builder stage to the NGINX web root directory
-#COPY --from=builder /app/dist/ /usr/share/nginx/html/
-
-# Expose port 80 for the NGINX web server
+# Expose port 80
 EXPOSE 80
 
-# Start NGINX when the container starts
+# Start nginx when the container starts
 CMD ["nginx", "-g", "daemon off;"]
