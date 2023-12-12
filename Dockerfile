@@ -10,7 +10,7 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-
+# Copy the entire project to the working directory
 COPY . .
 
 # Build the Angular app for production
@@ -20,7 +20,7 @@ RUN npm run build --prod
 FROM nginx:alpine
 
 # Copy the built Angular app from the previous stage to nginx directory
-# COPY ./conf/default.conf /etc/nginx/conf.d/default.conf
+#COPY ./conf/default.conf /etc/nginx/conf.d/default.conf
 RUN rm -rf /usr/share/nginx/html
 # COPY --from=builder /app/dist/ /usr/share/nginx/html    
 COPY --from=build /app/dist/ /usr/share/nginx/html
