@@ -1,7 +1,7 @@
 # Use node image as base
 FROM node:18.17.1-alpine AS build
 
-# Set the working directo
+# Set the working directory
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the working directory
